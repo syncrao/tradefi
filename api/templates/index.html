@@ -4,8 +4,22 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>TradeFi</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        function updateCounter() {
+            $.ajax({
+                url: '/get_counter',
+                method: 'GET',
+                success: function(data) {
+                    document.getElementById('counter').innerText = data;
+                }
+            });
+        }
+        setInterval(updateCounter, 1000); // Update counter every second
+    </script>
 </head>
 <body>
-    <h1>Counter {{ counter }}</h1>
+    <h1>Counter</h1>
+    <p>Counter value: <span id="counter">0</span></p>
 </body>
 </html>

@@ -69,7 +69,9 @@ def index():
     count_thread.start()
     return render_template("index.html", counter=counter)
 
-
+@app.route('/get_counter')
+def get_counter():
+    return str(counter)
 
 
 
