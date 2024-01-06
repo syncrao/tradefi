@@ -6,7 +6,9 @@ app = Flask(__name__)
 app.secret_key = "srr"
 headers, jwt_token, api =  main_login()
 
-print(api)
+@app.route('/')
+def index():
+    return headers
 
 
 

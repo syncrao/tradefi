@@ -1,4 +1,9 @@
-import pyotp, json, http.client
+import pyotp, json, http.client, os
+from dotenv import load_dotenv
+
+load_dotenv()
+
+api = os.getenv("api_key")
 
 def main_login():
     global headers, jwt_token
