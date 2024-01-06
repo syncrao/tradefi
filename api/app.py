@@ -60,12 +60,12 @@ def count():
         counter = counter + 1
         time.sleep(1)
 
-count_thread = threading.Thread(target=count)
-count_thread.start()
 
 
 @app.route('/')
 def index():
+    count_thread = threading.Thread(target=count)
+    count_thread.start()
     return render_template("index.html", counter=counter)
 
 
