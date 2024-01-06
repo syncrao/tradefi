@@ -1,6 +1,7 @@
-import pyotp, json, http.client, os
+from flask import Flask , render_template
+
+import pyotp, json, http.client, os, threading, time
 from dotenv import load_dotenv
-from flask import Flask 
 
 app = Flask(__name__)
 app.secret_key = "srr"
@@ -52,12 +53,20 @@ def main_login():
 
 headers, jwt_token, api =  main_login()
 
+counter = 0
+def count():
+    global counter
+    while True:
+        counter = counter + 1
+        time.sleep(1)
 
+count_thread = threading.Thread(target=count)
+count_thread.start()
 
 
 @app.route('/')
 def index():
-    return headers
+    return render_template("index.html", counter=counter)
 
 
 
