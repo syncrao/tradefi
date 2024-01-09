@@ -90,17 +90,17 @@ symbol_token_dict = {
     "HINDALCO-EQ": "1363",
     "AXISBANK-EQ": "5900",
     "GRASIM-EQ": "1232",
+    "BAJFINANCE-EQ": "317"
+    
+}
+
+symbol_token = {
     "BAJAJ-AUTO-EQ": "16669",
     "HINDUNILVR-EQ": "1394",
     "LT-EQ": "11483",
     "BRITANNIA-EQ": "547",
     "JSWSTEEL-EQ": "11723",
     "SBIN-EQ": "3045",
-    "BAJFINANCE-EQ": "317",
-    
-}
-
-symbol_token = {
     "ICICIBANK-EQ": "4963",
     "POWERGRID-EQ": "14977",
     "HEROMOTOCO-EQ": "1348",
