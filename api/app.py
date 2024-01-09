@@ -97,6 +97,10 @@ symbol_token_dict = {
     "JSWSTEEL-EQ": "11723",
     "SBIN-EQ": "3045",
     "BAJFINANCE-EQ": "317",
+    
+}
+
+symbol_token = {
     "ICICIBANK-EQ": "4963",
     "POWERGRID-EQ": "14977",
     "HEROMOTOCO-EQ": "1348",
@@ -127,7 +131,6 @@ symbol_token_dict = {
     "INFY-EQ": "1594",
     "HCLTECH-EQ": "7229"
 }
-
 
 @app.route('/')
 def index():
