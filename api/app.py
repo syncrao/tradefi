@@ -87,14 +87,14 @@ symbol_token_dict = {
     "INDUSINDBK-EQ": "5258",
     "M&M-EQ": "2031",
     "TATASTEEL-EQ": "3499",
-    "HINDALCO-EQ": "1363",
-    "AXISBANK-EQ": "5900",
-    "GRASIM-EQ": "1232",
     "BAJFINANCE-EQ": "317"
     
 }
 
 symbol_token = {
+    "HINDALCO-EQ": "1363",
+    "AXISBANK-EQ": "5900",
+    "GRASIM-EQ": "1232",
     "BAJAJ-AUTO-EQ": "16669",
     "HINDUNILVR-EQ": "1394",
     "LT-EQ": "11483",
@@ -136,6 +136,7 @@ symbol_token = {
 def index():
     candle_data_list = []
     for symbol, token in symbol_token_dict.items():
+        time.sleep(0.02)
         try:
             candle_data = five_min(headers, token)
             candle_data_list.append({"symbol": symbol, "data": candle_data})
