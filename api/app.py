@@ -1,4 +1,4 @@
-from flask import Flask , render_template
+from flask import Flask , render_template, jsonify
 import pyotp, json, http.client, os, threading, time
 from datetime import datetime, timedelta
 from dotenv import load_dotenv
@@ -78,20 +78,21 @@ def five_min(header, token):
     return candle_data
 
 symbol_token_dict = {
-    "SHREECEM-EQ": "3103",
+   
     "ADANIPORTS-EQ": "15083",
     "HDFCBANK-EQ": "1333",
-    "TITAN-EQ": "3506",
-    "TECHM-EQ": "13538",
-    # "COALINDIA-EQ": "20374",
-    # "INDUSINDBK-EQ": "5258",
-    # "M&M-EQ": "2031",
-    # "TATASTEEL-EQ": "3499",
-    # "BAJFINANCE-EQ": "317"
-    
+    "ONGC-EQ": "2475",
+    "TITAN-EQ": "3506"
 }
 
 symbol_token = {
+    "TECHM-EQ": "13538",
+    "COALINDIA-EQ": "20374",
+    "INDUSINDBK-EQ": "5258",
+    "M&M-EQ": "2031",
+    "TATASTEEL-EQ": "3499",
+    "BAJFINANCE-EQ": "317",
+     "SHREECEM-EQ": "3103",
     "HINDALCO-EQ": "1363",
     "AXISBANK-EQ": "5900",
     "GRASIM-EQ": "1232",
@@ -119,7 +120,6 @@ symbol_token = {
     "HDFCLIFE-EQ": "467",
     "KOTAKBANK-EQ": "1922",
     "NTPC-EQ": "11630",
-    "ONGC-EQ": "2475",
     "DIVISLAB-EQ": "10940",
     "TCS-EQ": "11536",
     "NESTLEIND-EQ": "17963",
@@ -135,17 +135,28 @@ symbol_token = {
 @app.route('/')
 def index():
     candle_data_list = []
+    
     for symbol, token in symbol_token_dict.items():
         time.sleep(0.02)
         try:
             candle_data = five_min(headers, token)
             candle_data_list.append({"symbol": symbol, "data": candle_data})
+
         except json.decoder.JSONDecodeError:
             print(f"Error occurred while processing {symbol}")
             continue
     return render_template("index.html", candle_data_list=candle_data_list)
 
 
+@app.route('/get_candle_data/<token>', methods=['GET'])
+def get_candle_data(token):
+    try:
+        candle_data = five_min(headers, token)
+        candle = candle_data[-1][-2]
+        print(candle)
+        return jsonify({"data": candle})
+    except json.decoder.JSONDecodeError:
+        return jsonify({"error": f"Error occurred while processing token: {token}"})
 
 
 if __name__ == '__main__':
