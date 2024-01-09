@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>TradeFi</title>
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <!-- <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script>
         function updateCounter() {
             $.ajax({
@@ -16,10 +16,19 @@
             });
         }
         setInterval(updateCounter, 1000); // Update counter every second
-    </script>
+    </script> -->
 </head>
 <body>
-    <h1>Counter</h1>
-    <p>Counter value: <span id="counter">0</span></p>
+  
+    <div style="text-align: center;">
+        {% for data in candle_data_list %}
+        <br>
+            <p><b>{{ data.symbol }} :</b> {{ data.data[-1][-2] }}</p>
+            <p><b>Yesterday</b> High: {{ data.data[-2][-4] }} Low: {{ data.data[-2][-3]}} </p>
+            <p><b>Today </b> High: {{ data.data[-1][-4] }} Low: {{ data.data[-1][-3]}}</p>
+           <hr>
+           
+        {% endfor %}
+    </div>
 </body>
 </html>
