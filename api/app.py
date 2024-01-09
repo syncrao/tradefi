@@ -81,7 +81,6 @@ symbol_token_dict = {
    
     "ADANIPORTS-EQ": "15083",
     "HDFCBANK-EQ": "1333",
-    "ONGC-EQ": "2475",
     "TITAN-EQ": "3506"
 }
 
@@ -135,7 +134,7 @@ symbol_token = {
 @app.route('/')
 def index():
     candle_data_list = []
-    
+
     for symbol, token in symbol_token_dict.items():
         time.sleep(0.02)
         try:
@@ -152,9 +151,7 @@ def index():
 def get_candle_data(token):
     try:
         candle_data = five_min(headers, token)
-        candle = candle_data[-1][-2]
-        print(candle)
-        return jsonify({"data": candle})
+        return jsonify({"data": candle_data})
     except json.decoder.JSONDecodeError:
         return jsonify({"error": f"Error occurred while processing token: {token}"})
 

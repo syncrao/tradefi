@@ -5,57 +5,117 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>TradeFi</title>
-    <!-- <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script>
-        function updateCounter() {
-            $.ajax({
-                url: '/get_counter',
-                method: 'GET',
-                success: function(data) {
-                    document.getElementById('counter').innerText = data;
-                }
-            });
+    <style>
+        .share {
+            text-align: center;
         }
-        setInterval(updateCounter, 1000); // Update counter every second
-    </script> -->
-    <!-- <script>
-        // Assuming you have the symbol_token_dict available in the frontend
+    </style>
+</head>
 
+<body>
+
+    <div id="dataContainer"></div>
+
+    <script>
         const symbol_token_dict = {
+            "TECHM-EQ": "13538",
+            "ONGC-EQ": "2475",
+            "COALINDIA-EQ": "20374",
+            "INDUSINDBK-EQ": "5258",
+            "M&M-EQ": "2031",
+            "TATASTEEL-EQ": "3499",
+            "BAJFINANCE-EQ": "317",
             "SHREECEM-EQ": "3103",
-            "ADANIPORTS-EQ": "15083",
-            "BAJFINANCE-EQ": "317"
+            "HINDALCO-EQ": "1363",
+            "AXISBANK-EQ": "5900",
+            "GRASIM-EQ": "1232",
+            "BAJAJ-AUTO-EQ": "16669",
+            "HINDUNILVR-EQ": "1394",
+            "LT-EQ": "11483",
+            "BRITANNIA-EQ": "547",
+            "JSWSTEEL-EQ": "11723",
+            "SBIN-EQ": "3045",
+            "ICICIBANK-EQ": "4963",
+            "POWERGRID-EQ": "14977",
+            "HEROMOTOCO-EQ": "1348",
+            "SBILIFE-EQ": "21808",
+            "BAJAJHLDNG-EQ": "305",
+            "ADANIGREEN-EQ": "3563",
+            "BAJAJFINSV-EQ": "16675",
+            "CIPLA-EQ": "694",
+            "UPL-EQ": "11287",
+            "ITC-EQ": "1660",
+            "TATAMOTORS-EQ": "3456",
+            "TATACONSUM-EQ": "3432",
+            "BHARTIARTL-EQ": "10604",
+            "WIPRO-EQ": "3787",
+            "ULTRACEMCO-EQ": "11532",
+            "HDFCLIFE-EQ": "467",
+            "KOTAKBANK-EQ": "1922",
+            "NTPC-EQ": "11630",
+            "DIVISLAB-EQ": "10940",
+            "TCS-EQ": "11536",
+            "NESTLEIND-EQ": "17963",
+            "DRREDDY-EQ": "881",
+            "ASIANPAINT-EQ": "236",
+            "RELIANCE-EQ": "2885",
+            "EICHERMOT-EQ": "910",
+            "MARUTI-EQ": "10999",
+            "INFY-EQ": "1594",
+            "HCLTECH-EQ": "7229"
         };
 
-        // Function to fetch data for a token
         async function fetchCandleDataSequential(tokens) {
             for (let token of tokens) {
                 try {
                     const response = await fetch(`/get_candle_data/${token}`);
                     const data = await response.json();
-                    console.log(`Data for token ${token}:`, data);
+                    displayData(token, data);
                 } catch (error) {
                     console.error(`Error fetching data for token ${token}:`, error);
                 }
             }
         }
 
-        // Convert object values to an array of tokens
+        function displayData(token, data) {
+            const dataContainer = document.getElementById('dataContainer');
+
+            const tokenName = Object.keys(symbol_token_dict).find(key => symbol_token_dict[key] === token);
+
+            const div = document.createElement('div');
+            div.innerHTML = ` <br> <p class='share' > <b>${tokenName}:</b> ${JSON.stringify(data.data['4']['4'])}</p>
+            <p class='share' > <b>Today:</b>  High: ${JSON.stringify(data.data['4']['2'])} Low: ${JSON.stringify(data.data['4']['3'])} </p>
+            <p class='share' > <b>Yesterday:</b>  High: ${JSON.stringify(data.data['3']['2'])} Low: ${JSON.stringify(data.data['3']['3'])} </p>
+            <hr>`;
+
+            const todayHigh = parseFloat(data.data['4']['2']);
+            const todayLow = parseFloat(data.data['4']['3']);
+            const yesterdayHigh = parseFloat(data.data['3']['2']);
+            const yesterdayLow = parseFloat(data.data['3']['3']);
+
+            if (todayHigh > yesterdayHigh && todayLow < yesterdayLow) {
+                div.style.color = 'green';
+                div.style.backgroundColor = 'chartreuse';
+            } else {
+                div.style.color = 'black';
+            }
+
+
+            if (dataContainer.firstChild) {
+                dataContainer.insertBefore(div, dataContainer.firstChild);
+            } else {
+                dataContainer.appendChild(div);
+            }
+        }
+
         const tokens = Object.values(symbol_token_dict);
 
-        // Fetch data sequentially
         fetchCandleDataSequential(tokens);
-
-
-    </script> -->
-
-</head>
-
-<body>
+    </script>
 
     <div style="text-align: center;">
         {% for data in candle_data_list %}
-        <br style="background-color: chartreuse;">
+        <br>
         <p><b>{{ data.symbol }} :</b>
 
             {{ data.data[-1][-2] }}
@@ -74,50 +134,6 @@
         {% endfor %}
     </div>
 
-
-    <div id="dataContainer"></div>
-
-    <script>
-        const symbol_token_dict = {
-            "SHREECEM-EQ": "3103",
-            "ADANIPORTS-EQ": "15083",
-            "BAJFINANCE-EQ": "317"
-        };
-
-        // Function to fetch data for a token
-        async function fetchCandleDataSequential(tokens) {
-            for (let token of tokens) {
-                try {
-                    const response = await fetch(`/get_candle_data/${token}`);
-                    const data = await response.json();
-                    displayData(token, data); // Call function to display data
-                } catch (error) {
-                    console.error(`Error fetching data for token ${token}:`, error);
-                }
-            }
-        }
-
-        // Function to display data on the HTML page
-        function displayData(token, data) {
-            const dataContainer = document.getElementById('dataContainer');
-
-            // Create a new div to hold the fetched data
-            const div = document.createElement('div');
-            div.innerHTML = `<p>Data for token ${token}: ${JSON.stringify(data)}</p>`;
-
-            if (dataContainer.firstChild) {
-                dataContainer.insertBefore(div, dataContainer.firstChild);
-            } else {
-                dataContainer.appendChild(div); // If container is empty, append normally
-            }
-        }
-
-        // Convert object values to an array of tokens
-        const tokens = Object.values(symbol_token_dict);
-
-        // Fetch data sequentially and display on the HTML page
-        fetchCandleDataSequential(tokens);
-    </script>
 </body>
 
 </html>
