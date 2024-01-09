@@ -80,9 +80,9 @@ def five_min(header, token):
 symbol_token_dict = {
     "SHREECEM-EQ": "3103",
     "ADANIPORTS-EQ": "15083",
-    # "HDFCBANK-EQ": "1333",
-    # "TITAN-EQ": "3506",
-    # "TECHM-EQ": "13538",
+    "HDFCBANK-EQ": "1333",
+    "TITAN-EQ": "3506",
+    "TECHM-EQ": "13538",
     # "COALINDIA-EQ": "20374",
     # "INDUSINDBK-EQ": "5258",
     # "M&M-EQ": "2031",
