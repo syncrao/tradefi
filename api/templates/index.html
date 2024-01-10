@@ -66,7 +66,8 @@
             "EICHERMOT-EQ": "910",
             "MARUTI-EQ": "10999",
             "INFY-EQ": "1594",
-            "THIS IS LAST >>>>>>REFRESH__AGAIN>>>>>> HCLTECH-EQ": "7229"
+            "HCLTECH-EQ": "7229",
+            "THIS IS LAST >>>>>>REFRESH__AGAIN>>>>>> MCX-EQ": "31181"
         };
 
         async function fetchCandleDataSequential(tokens) {
@@ -87,17 +88,20 @@
             const tokenName = Object.keys(symbol_token_dict).find(key => symbol_token_dict[key] === token);
             const today_len = data.data.length - 1 ;
             const yesterday_len  = data.data.length - 2 ;
-            console.log(today_len)
-            const div = document.createElement('div');
-            div.innerHTML = ` <br> <p class='share' > <b>${tokenName}:</b> ${JSON.stringify(data.data[today_len]['4'])}</p>
-            <p class='share' > <b>Today:</b>  High: ${JSON.stringify(data.data[today_len]['2'])} Low: ${JSON.stringify(data.data[today_len]['3'])} </p>
-            <p class='share' > <b>Yesterday:</b>  High: ${JSON.stringify(data.data[yesterday_len]['2'])} Low: ${JSON.stringify(data.data[yesterday_len]['3'])} </p>
-            <hr>`;
-
             const todayHigh = parseFloat(data.data[today_len]['2']);
             const todayLow = parseFloat(data.data[today_len]['3']);
             const yesterdayHigh = parseFloat(data.data[yesterday_len]['2']);
             const yesterdayLow = parseFloat(data.data[yesterday_len]['3']);
+            const todayVol = parseFloat(data.data[today_len]['5']);
+            const yesterdayVol = parseFloat(data.data[yesterday_len]['5']);
+            
+            const div = document.createElement('div');
+            div.innerHTML = ` <br> <p class='share' > <b>${tokenName}:</b> ${JSON.stringify(data.data[today_len]['4'])}</p>
+            <p class='share' > <b>Today:</b>  High: ${todayHigh} -- Low: ${todayLow} -- Volume: ${todayVol} </p>
+            <p class='share' > <b>Yesterday:</b>  High: ${yesterdayHigh} -- Low: ${yesterdayLow} -- Volume: ${yesterdayVol} </p>
+            <hr>`;
+
+            
 
             if (todayHigh > yesterdayHigh && todayLow < yesterdayLow) {
                 div.style.color = 'green';
@@ -123,7 +127,6 @@
             dataContainer.innerHTML = ''; 
             fetchCandleDataSequential(tokens);
         }
-
         document.getElementById('refreshButton').addEventListener('click', refreshData);
     </script>
 
