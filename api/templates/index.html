@@ -14,6 +14,7 @@
 
 <body>
     <button style="text-align: center; padding: 2%; background-color: aqua;" id="refreshButton">Refresh</button>
+    <a style="background-color: coral; color: black; padding: 2%;" href="/fut">Futures</a>
     <div id="dataContainer"></div>
 
 
@@ -72,8 +73,9 @@
 
         async function fetchCandleDataSequential(tokens) {
             for (let token of tokens) {
+                const tokenName = Object.keys(symbol_token_dict).find(key => symbol_token_dict[key] === token).replace(/-EQ$/, '');
                 try {
-                    const response = await fetch(`/get_candle_data/${token}`);
+                    const response = await fetch(`/get_candle_data/${token}/${tokenName}`);
                     const data = await response.json();
                     displayData(token, data);
                 } catch (error) {
@@ -119,6 +121,7 @@
         }
 
         const tokens = Object.values(symbol_token_dict);
+        console.log(tokens)
 
         fetchCandleDataSequential(tokens);
 

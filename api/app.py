@@ -54,14 +54,14 @@ def main_login():
 headers, jwt_token, api =  main_login()
 
 
-def five_min(header, token):
+def five_min(header, token, exc):
 
     date_str = datetime.now() 
     time_str = datetime.strptime("20:30", "%H:%M")
     date_str = date_str.strftime("%Y-%m-%d")
     time_str = time_str.strftime("%H:%M")
     payload = {
-        "exchange": "NSE",
+        "exchange": exc,
         "symboltoken": token,
         "interval": "ONE_DAY",
         "fromdate":  '2024-01-02 09:15',
@@ -84,13 +84,27 @@ def index():
     return render_template("index.html")
 
 
-@app.route('/get_candle_data/<token>', methods=['GET'])
-def get_candle_data(token):
+@app.route('/get_candle_data/<token>/<name>', methods=['GET'])
+def get_candle_data(token, name):
     try:
-        candle_data = five_min(headers, token)
+        candle_data = five_min(headers, token, "NSE")
         return jsonify({"data": candle_data})
     except json.decoder.JSONDecodeError:
         return jsonify({"error": f"Error occurred while processing token: {token}"})
+
+@app.route('/fut')
+def fut():
+    return render_template("fut.html")
+
+@app.route('/get_fut_data/<token>/<name>', methods=['GET'])
+def get_fut_data(token, name):
+    try:
+        candle_data = five_min(headers, token, "NFO")
+        return jsonify({"data": candle_data})
+    except json.decoder.JSONDecodeError:
+        return jsonify({"error": f"Error occurred while processing token: {token}"})
+
+
 
 
 if __name__ == '__main__':
