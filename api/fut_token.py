@@ -18,7 +18,7 @@ def generate_month_year():
     today = datetime.now()
     current_month = today.strftime("%b%y").upper() 
     
-    next_month = today + timedelta(days=30)
+    next_month = today + timedelta(days=5)
     next_month_str = next_month.strftime("%b%y").upper()
     
     return [current_month, next_month_str]
