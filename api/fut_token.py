@@ -34,7 +34,7 @@ for item in data:
     for name in symbols_list:
         for month in months_list:
             symbol = f"{month}FUT"
-            if item['symbol'].endswith(symbol) and  item['name'] == name.replace("-EQ", ""):
+            if item['symbol'].endswith(symbol):
                 symbol_token_dict[item['symbol']] = item['token']
 
 with open('token.json', 'w') as file:
