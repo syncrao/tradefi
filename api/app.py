@@ -65,7 +65,7 @@ def five_min(header, token, exc):
         "symboltoken": token,
         "interval": "ONE_DAY",
         "fromdate":  '2024-01-02 09:15',
-        "todate": date_str+' '+time_str
+        "todate": '2024-01-03' + time_str
     }
     payload_str = json.dumps(payload)
 
