@@ -7,6 +7,7 @@ from dotenv import load_dotenv
 app = Flask(__name__)
 app.secret_key = "srr"
 
+
 load_dotenv()
 
 api = os.getenv("api_key")
@@ -54,18 +55,21 @@ def main_login():
 headers, jwt_token, api =  main_login()
 
 
+
 def five_min(header, token, exc):
 
     date_str = datetime.now() 
+    fdate_str = datetime.now() - timedelta(days=7)
     time_str = datetime.strptime("20:30", "%H:%M")
     date_str = date_str.strftime("%Y-%m-%d")
     time_str = time_str.strftime("%H:%M")
+    fdate_str = fdate_str.strftime("%Y-%m-%d")
     payload = {
         "exchange": exc,
         "symboltoken": token,
         "interval": "ONE_DAY",
-        "fromdate":  '2024-01-02 09:15',
-        "todate": '2024-01-03' + time_str
+        "fromdate":  fdate_str+' 09:15',
+        "todate": date_str+' '+time_str
     }
     payload_str = json.dumps(payload)
 
@@ -86,9 +90,11 @@ def index():
 
 @app.route('/get_candle_data/<token>/<name>', methods=['GET'])
 def get_candle_data(token, name):
+    print(name)
     try:
         candle_data = five_min(headers, token, "NSE")
         return jsonify({"data": candle_data})
+    
     except json.decoder.JSONDecodeError:
         return jsonify({"error": f"Error occurred while processing token: {token}"})
 
