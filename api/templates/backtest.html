@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Back Test</title>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+
+        .entry {
+            margin-bottom: 10px;
+        }
+
+        .profit {
+            color: green;
+        }
+
+        .loss {
+            color: red;
+        }
+
+        .market-close {
+            color: blue;
+        }
+    </style>
+</head>
+
+<body>
+    <button style="text-align: center; padding: 2%; background-color: aqua;"><a
+            style="text-decoration: none; color: black;" href="/fut">
+            < Go Back</a></button>
+
+
+    <h2>Add Candles</h2>
+    <div id="student-list">
+        <div>
+            <select class="candle">
+                <option value="-1">Last Candle</option>
+                <option value="-2">Second Last</option>
+                <option value="-3">Third Last</option>
+                <option value="-4">Forth Last</option>
+            </select>
+            <select class="ohlc">
+                <option value="1">OPEN</option>
+                <option value="2">HIGH</option>
+                <option value="3">LOW</option>
+                <option value="4">CLOSE</option>
+            </select>
+            <select class="op">
+                <option value="99">| > |</option>
+                <option value="101">| < |</option>
+            </select>
+            <select class="candle2">
+                <option value="-1">Last Candle</option>
+                <option value="-2">Second Last</option>
+                <option value="-3">Third Last</option>
+                <option value="-4">Forth Last</option>
+            </select>
+            <select class="ohlc2">
+                <option value="1">OPEN</option>
+                <option value="2">HIGH</option>
+                <option value="3">LOW</option>
+                <option value="4">CLOSE</option>
+            </select>
+
+        </div>
+    </div>
+
+
+
+    <br>
+    <button onclick="addCandles()">Add Another Candle</button>
+    <button onclick="sendData()">Submit</button>
+
+
+    <br>
+
+    <h1>Trading Data</h1>
+    <div id="data-container"></div>
+
+    <script>
+        function addCandles() {
+            const studentList = document.getElementById('student-list');
+            const newStudent = document.createElement('div');
+            newStudent.innerHTML = `
+    <br>
+    <select class="candle">
+                <option value="-1">Last Candle</option>
+                <option value="-2">Second Last</option>
+                <option value="-3">Third Last</option>
+                <option value="-4">Forth Last</option>
+            </select>
+            <select class="ohlc">
+                <option value="1">OPEN</option>
+                <option value="2">HIGH</option>
+                <option value="3">LOW</option>
+                <option value="4">CLOSE</option>
+            </select>
+            <select class="op">
+                <option value=99>| > |</option>
+                <option value=101>| < |</option>
+            </select>
+            <select class="candle2">
+                <option value="-1">Last Candle</option>
+                <option value="-2">Second Last</option>
+                <option value="-3">Third Last</option>
+                <option value="-4">Forth Last</option>
+            </select>
+            <select class="ohlc2">
+                <option value="1">OPEN</option>
+                <option value="2">HIGH</option>
+                <option value="3">LOW</option>
+                <option value="4">CLOSE</option>
+            </select>
+    `;
+            studentList.appendChild(newStudent);
+        }
+
+        function sendData() {
+            const candle = document.querySelectorAll('.candle');
+            const ohlc = document.querySelectorAll('.ohlc');
+            const op = document.querySelectorAll('.op');
+            const candle2 = document.querySelectorAll('.candle2');
+            const ohlc2 = document.querySelectorAll('.ohlc2');
+            const candles = [];
+
+            for (let i = 0; i < candle.length; i++) {
+                candles.push([candle[i].value, ohlc[i].value, op[i].value, candle2[i].value, ohlc2[i].value]);
+            }
+
+            fetch('/backdata', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(candles),
+            }).then(response => response.json())
+                .then(data => {
+                    console.log('Success:', data);
+                    const dataContainer = document.getElementById('data-container');
+
+                    data.data.forEach(entry => {
+                        const div = document.createElement('div');
+                        div.className = 'entry';
+                        if (entry.includes('Book Profit')) {
+                            div.classList.add('profit');
+                        } else if (entry.includes('Book Loss')) {
+                            div.classList.add('loss');
+                        } else if (entry.includes('Market Close')) {
+                            div.classList.add('market-close');
+                        }
+                        div.textContent = entry;
+                        dataContainer.appendChild(div);
+                    });
+                })
+                .catch((error) => {
+                    console.error('Error:', error);
+                });
+        }
+    </script>
+
+
+
+</body>
+
+</html>
