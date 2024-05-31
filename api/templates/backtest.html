@@ -27,13 +27,26 @@
         .market-close {
             color: blue;
         }
+        select, input[type="number"] {
+            padding: 10px;
+            margin: 1px 0;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 12px;
+            width: calc(20% - 20px);
+            -webkit-appearance: none; /* Safari and Chrome */
+            -moz-appearance: none; /* Firefox */
+            appearance: none; /* CSS3 */
+       
+            background-color: white;
+        }
     </style>
 </head>
 
 <body>
     <button style="text-align: center; padding: 2%; background-color: aqua;"><a
             style="text-decoration: none; color: black;" href="/fut">
-            < Go Back</a></button>
+            &lt Go Back</a></button>
 
         <p>5 Min Nifty50 Candle 2 Year Backtest Data</p>
     
@@ -58,8 +71,8 @@
                 <option value="4">CLOSE</option>
             </select>
             <select class="op">
-                <option value="99">| > |</option>
-                <option value="101">| < |</option>
+                <option value="101">&gt greater &gt</option>
+                <option value="99">&lt less &lt </option>
             </select>
             <select class="candle2">
                 <option value="-1">Last Candle</option>
@@ -109,8 +122,8 @@
                 <option value="4">CLOSE</option>
             </select>
             <select class="op">
-                <option value=99>| > |</option>
-                <option value=101>| < |</option>
+                <option value=101>&gt greater &gt</option>
+                <option value=99>&lt less &lt </option>
             </select>
             <select class="candle2">
                 <option value="-1">Last Candle</option>
