@@ -81,6 +81,7 @@
     <br>
 
     <h1>Trading Data</h1>
+    <div id="result"></div>
     <div id="data-container"></div>
 
     <script>
@@ -133,7 +134,7 @@
                 candles.push([candle[i].value, ohlc[i].value, op[i].value, candle2[i].value, ohlc2[i].value]);
             }
 
-            fetch('/backdata', {
+            fetch('http://raoshah.pythonanywhere.com/backtest/', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -157,6 +158,38 @@
                         div.textContent = entry;
                         dataContainer.appendChild(div);
                     });
+                    let totalProfit = 0;
+                    let totalLoss = 0;
+
+                    data.data.forEach(entry => {
+                        const profitMatch = entry.match(/Book Profit\s+([\d.-]+)/);
+                        const lossMatch = entry.match(/Book Loss\s+(-[\d.-]+)/);
+                        const closeMatch = entry.match(/Market Close\s+(-?[\d.-]+)/);
+
+                        if (profitMatch) {
+                            totalProfit += parseFloat(profitMatch[1]);
+                        }
+                        if (lossMatch) {
+                            totalLoss += parseFloat(lossMatch[1]);
+                        }
+                        if (closeMatch) {
+                            const closeValue = parseFloat(closeMatch[1]);
+                            if (closeValue > 0) {
+                                totalProfit += closeValue;
+                            } else {
+                                totalLoss += closeValue;
+                            }
+                        }
+                    });
+                    const result = document.getElementById('result');
+                    const total = document.createElement('div');
+                    total.innerHTML = `
+                    <p> Total Profit : ${totalProfit} </p>
+                    <p> Total Loss : ${totalLoss} </p>
+                    <p> Net Profit/Loss:  ${totalProfit + totalLoss} </p> 
+                    <h2> Orders </h2>
+                    `
+                    result.appendChild(total)
                 })
                 .catch((error) => {
                     console.error('Error:', error);
