@@ -36,9 +36,15 @@
             < Go Back</a></button>
 
 
-    <h2>Add Candles</h2>
+    
     <div id="student-list">
         <div>
+            <p>Add Profit Book and StopLoss Points</p>
+            <input type="number" placeholder="Profit Points " class="profit">
+            <input type="number" placeholder="Stop Points" class="loss">
+            <br>
+            <h2>Add Candles</h2>
+        
             <select class="candle">
                 <option value="-1">Last Candle</option>
                 <option value="-2">Second Last</option>
@@ -128,18 +134,30 @@
             const op = document.querySelectorAll('.op');
             const candle2 = document.querySelectorAll('.candle2');
             const ohlc2 = document.querySelectorAll('.ohlc2');
+            const profit = document.querySelector('.profit')
+            const loss = document.querySelector('.loss')
+
+            let stopLoss = [profit.value, loss.value]
+            if (stopLoss[0] === "" || stopLoss[1] === "") {
+                stopLoss = [10, 20]
+                
+            }
+           
+
             const candles = [];
+            
 
             for (let i = 0; i < candle.length; i++) {
                 candles.push([candle[i].value, ohlc[i].value, op[i].value, candle2[i].value, ohlc2[i].value]);
             }
-
+            // https://raoshah.pythonanywhere.com
+            // http://127.0.0.1:8000/
             fetch('https://raoshah.pythonanywhere.com/backtest/', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
                 },
-                body: JSON.stringify(candles),
+                body: JSON.stringify({"data": candles, "stoploss": stopLoss}),
             }).then(response => response.json())
                 .then(data => {
                     console.log('Success:', data);
@@ -187,6 +205,7 @@
                     <p> Total Profit : ${totalProfit} </p>
                     <p> Total Loss : ${totalLoss} </p>
                     <p> Net Profit/Loss:  ${totalProfit + totalLoss} </p> 
+                    <p> Total Order: ${data.data.length}
                     <h2> Orders </h2>
                     `
                     result.appendChild(total)
