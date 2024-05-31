@@ -134,7 +134,7 @@
                 candles.push([candle[i].value, ohlc[i].value, op[i].value, candle2[i].value, ohlc2[i].value]);
             }
 
-            fetch('http://raoshah.pythonanywhere.com/backtest/', {
+            fetch('https://raoshah.pythonanywhere.com/backtest/', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
