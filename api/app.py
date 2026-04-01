@@ -9,10 +9,8 @@ app.secret_key = "srr"
 
 
 load_dotenv()
+api = os.getenv("API_KEY")
 
-api = os.getenv("api_key")
-
-api = "qATshT3J"
 
 conn = http.client.HTTPSConnection("apiconnect.angelbroking.com")
 
